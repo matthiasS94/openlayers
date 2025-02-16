@@ -31,17 +31,31 @@ document.getElementById("urlForm").addEventListener("submit", function (event) {
       "x-api-target": baseUrl,
     },
   })
-    .then(function (response) {
-      return response.text();
-    })
-    .then(function (getCapabilitiesResponse) {
+    .then((response) => response.text())
+    .then((getCapabilitiesResponse) => {
       const parser = new WMSCapabilities();
       const capabilities = parser.read(getCapabilitiesResponse);
-      const stringCapabilities = JSON.stringify(capabilities);
-      const jsonCapabilities = JSON.parse(stringCapabilities);
-      const availableLayers = jsonCapabilities.Capability.Layer.Layer;
-      const layerList = [];
-      for (const layer of availableLayers) {
+      const availableLayers = capabilities.Capability.Layer.Layer;
+
+      const layerContainer = document.getElementById("layerContainer");
+
+      availableLayers.forEach((layer) => {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = layer.Name;
+        checkbox.dataset.layerName = layer.Name;
+
+        const label = document.createElement("label");
+        label.htmlFor = layer.Name;
+        label.textContent = layer.Name;
+
+        const layerWrapper = document.createElement("div");
+        layerWrapper.appendChild(checkbox);
+        layerWrapper.appendChild(label);
+
+        layerContainer.appendChild(layerWrapper);
+
+        // create WMS Layer, but do not add to Map
         const wmsLayer = new ImageLayer({
           source: new ImageWMS({
             url: baseUrl,
@@ -50,10 +64,14 @@ document.getElementById("urlForm").addEventListener("submit", function (event) {
             serverType: "geoserver",
           }),
         });
-        map.addLayer(wmsLayer);
-        layerList.push("Layer Name: " + layer.Name);
-      }
 
-      document.getElementById("log").innerText = layerList;
+        checkbox.addEventListener("change", function () {
+          if (this.checked) {
+            map.addLayer(wmsLayer);
+          } else {
+            map.removeLayer(wmsLayer);
+          }
+        });
+      });
     });
 });
