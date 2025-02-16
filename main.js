@@ -24,7 +24,6 @@ const getCapabilitiesParams = "?service=WMS&request=GetCapabilities";
 
 document.getElementById("urlForm").addEventListener("submit", function (event) {
   event.preventDefault();
-  console.log(document.getElementById("urlInput").value);
   baseUrl = document.getElementById("urlInput").value;
 
   fetch(baseUrl + getCapabilitiesParams)
