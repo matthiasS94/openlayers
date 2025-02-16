@@ -9,16 +9,36 @@
     <style>
       html,
       body,
-      #map-container {
-        margin: 0;
-        height: 100%;
+      .map {
         width: 100%;
-        font-family: sans-serif;
+        height: 800px;
+      }
+      .log-container {
+        height: 400px;
+        overflow: scroll;
+      }
+      #urlInput {
+        width: 100%; /* Füllt den verfügbaren Platz */
+        max-width: 600px; /* Maximale Breite */
+        padding: 8px; /* Etwas Innenabstand */
+        font-size: 16px; /* Größere Schrift */
       }
     </style>
   </head>
   <body>
-    <div id="map-container"></div>
+    <form id="urlForm">
+      <label for="urlInput">Put URL here:</label>
+      <input
+        type="url"
+        id="urlInput"
+        name="urlInput"
+        value="http://localhost:8080/geoserver/demo/wms"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+    <div class="map" id="map-container"></div>
+    <div class="log-container"><code id="log"></code></div>
     <script src="./main.js" type="module"></script>
   </body>
 </html>
