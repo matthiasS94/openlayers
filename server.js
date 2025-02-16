@@ -11,15 +11,18 @@ async function startServer() {
   });
 
   // proxy api requests
-  app.use(
-    "/api",
+  app.use("/api", (req, res, next) => {
+    // dynamic decision, based on request-header and/or URL
+    const target = req.headers["x-api-target"] || "https://default-api.com"; // Standard-value
+
+    // Proxy with dynamic target
     createProxyMiddleware({
-      target: "https://meine-api.com", // Ziel-API
+      target,
       changeOrigin: true,
       secure: false,
-      pathRewrite: { "^/api": "" },
-    })
-  );
+      pathRewrite: { "^/api": "" }, // delete "/api" from URL
+    })(req, res, next);
+  });
 
   // use Vite in frontend
   app.use(vite.middlewares);

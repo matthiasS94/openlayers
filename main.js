@@ -26,7 +26,11 @@ document.getElementById("urlForm").addEventListener("submit", function (event) {
   event.preventDefault();
   baseUrl = document.getElementById("urlInput").value;
 
-  fetch(baseUrl + getCapabilitiesParams)
+  fetch("/api" + getCapabilitiesParams, {
+    headers: {
+      "x-api-target": baseUrl,
+    },
+  })
     .then(function (response) {
       return response.text();
     })
