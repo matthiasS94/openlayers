@@ -5,6 +5,8 @@
   "private": true,
   "dependencies": {
     "colormap": "^2.3.2",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3",
     "kompas": "^0.0.2",
     "ol": "^10.3.0",
     "ol-mapbox-style": "^12.3.5",
@@ -25,7 +27,8 @@
     "lint": "eslint main.js examples",
     "test": "npm run lint",
     "start": "vite serve",
-    "build": "vite build"
+    "build": "vite build",
+    "dev": "node server.js"
   },
   "devDependencies": {
     "eslint": "^8.57.1",
